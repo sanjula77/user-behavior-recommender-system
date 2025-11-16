@@ -1,0 +1,6 @@
+pandas
+pymongo
+python-dotenv
+pyarrow          # for parquet
+pytz
+pytest
