@@ -11,7 +11,12 @@ OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "outputs")
 def load_models():
     tfidf = joblib.load(os.path.join(MODEL_DIR, "tfidf_vectorizer.joblib"))
     sim_matrix = np.load(os.path.join(MODEL_DIR, "item_sim_matrix.npy"))
-    svd = joblib.load(os.path.join(MODEL_DIR, "svd_model.joblib"))
+    svd = None
+    try:
+        svd = joblib.load(os.path.join(MODEL_DIR, "svd_model.joblib"))
+    except Exception:
+        # SVD model might not exist if there were insufficient items
+        pass
     user_factors = pd.read_csv(os.path.join(MODEL_DIR, "user_factors.csv"), index_col=0)
     item_factors = pd.read_csv(os.path.join(MODEL_DIR, "item_factors.csv"), index_col=0)
     user_cluster = None

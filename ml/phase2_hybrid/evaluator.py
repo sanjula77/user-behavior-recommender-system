@@ -18,6 +18,14 @@ def recall_at_k(recs, ground_truth, k=10):
     return hits / len(ground_truth)
 
 def evaluate_all(train_df, test_df, k=10, weights=(0.4,0.4,0.2)):
+    if test_df.empty:
+        return {
+            "precision@K": 0.0,
+            "recall@K": 0.0,
+            "n_users": 0,
+            "note": "Empty test set - cannot evaluate"
+        }
+    
     users = test_df.index.tolist()
     precisions = []
     recalls = []

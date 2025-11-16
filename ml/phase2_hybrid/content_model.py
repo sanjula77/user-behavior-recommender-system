@@ -14,6 +14,10 @@ def train_content_model(item_list):
     item_list: list of item identifiers (e.g., normalized URL paths or titles)
     Returns TF-IDF vectorizer and item similarity matrix (dense or sparse)
     """
+    if not item_list:
+        print("Warning: Empty item list. Skipping content model training.")
+        return None, None
+    
     corpus = [str(it) for it in item_list]
     vectorizer = TfidfVectorizer(ngram_range=(1,2), min_df=1)
     X = vectorizer.fit_transform(corpus)

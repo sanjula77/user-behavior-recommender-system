@@ -4,6 +4,7 @@ import pandas as pd
 import os
 from sklearn.model_selection import train_test_split
 from collections import defaultdict
+from urllib.parse import urlparse
 
 OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "outputs")
 
@@ -27,6 +28,19 @@ def load_events(limit=None):
         except Exception:
             return pd.DataFrame()
 
+def normalize_url(url: str) -> str:
+    """Normalize URL by keeping path + query, dropping scheme+host."""
+    if not url or pd.isna(url):
+        return ""
+    try:
+        parsed = urlparse(url)
+        # keep path + query, drop scheme+host for normalization
+        path = parsed.path or "/"
+        q = f"?{parsed.query}" if parsed.query else ""
+        return (path + q).lower()
+    except Exception:
+        return str(url).lower()
+
 def build_user_item(events_df):
     """
     Build implicit user-item interaction counts.
@@ -35,6 +49,11 @@ def build_user_item(events_df):
     """
     if events_df.empty:
         return pd.DataFrame()
+
+    # Create page_url_norm if it doesn't exist
+    if "page_url_norm" not in events_df.columns:
+        events_df = events_df.copy()
+        events_df["page_url_norm"] = events_df["page_url"].apply(normalize_url)
 
     events_df["item"] = events_df["page_url_norm"].astype(str)
     # weight clicks more than page views
@@ -67,9 +86,26 @@ def train_test_split_interactions(user_item_df, test_size=0.2, seed=42):
     """
     Simple user-level split: keep some users for test and train.
     For production use time-based or leave-one-out splits.
+    Handles edge cases with very few users.
     """
+    if user_item_df.empty:
+        return pd.DataFrame(), pd.DataFrame()
+    
     users = user_item_df.index.tolist()
-    train_users, test_users = train_test_split(users, test_size=test_size, random_state=seed)
+    n_users = len(users)
+    
+    # Handle edge cases with too few users
+    if n_users == 1:
+        # Only one user: use all data for training, empty test set
+        return user_item_df, pd.DataFrame()
+    elif n_users == 2:
+        # Two users: split 1-1
+        train_users = [users[0]]
+        test_users = [users[1]]
+    else:
+        # Normal case: use train_test_split
+        train_users, test_users = train_test_split(users, test_size=test_size, random_state=seed)
+    
     train_df = user_item_df.loc[train_users]
     test_df = user_item_df.loc[test_users]
     return train_df, test_df
