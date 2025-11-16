@@ -4,3 +4,7 @@ python-dotenv
 pyarrow          # for parquet
 pytz
 pytest
+scikit-learn
+scipy
+joblib
+pytest
