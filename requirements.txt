@@ -1,0 +1,13 @@
+faker
+numpy
+pandas
+pyarrow
+matplotlib
+seaborn
+scipy
+python-dateutil
+tqdm
+scikit-learn
+xgboost
+tensorflow
+sentence-transformers
