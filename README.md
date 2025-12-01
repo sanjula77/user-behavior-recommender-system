@@ -1,4 +1,4 @@
-# User Behavior Analytics Platform
+<h1 align="center">User Behavior Analytics Platform</h1>
 
 <div align="center">
 
