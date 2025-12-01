@@ -1,0 +1,42 @@
+{
+  "random_seed": 42,
+  "num_users": 5000,
+  "start_date": "2025-06-03T10:29:01Z",
+  "end_date": "2025-11-30T10:29:01Z",
+  "avg_sessions_per_user": 5,
+  "lambda_sessions_poisson": 3,
+  "avg_events_per_session": 8,
+  "bot_ratio": 0.02,
+  "behavior_labels": [
+    "explorer",
+    "scanner",
+    "buyer",
+    "bot"
+  ],
+  "page_types": [
+    "home",
+    "category",
+    "product",
+    "blog",
+    "pricing",
+    "checkout"
+  ],
+  "device_types": [
+    "mobile",
+    "desktop",
+    "tablet"
+  ],
+  "traffic_sources": [
+    "organic",
+    "referral",
+    "ads",
+    "direct"
+  ],
+  "output_files": {
+    "users": "C:\\Users\\ASUS\\Desktop\\user_behavior_project\\data\\raw\\users_raw.csv",
+    "sessions": "C:\\Users\\ASUS\\Desktop\\user_behavior_project\\data\\raw\\sessions_raw.csv",
+    "events": "C:\\Users\\ASUS\\Desktop\\user_behavior_project\\data\\raw\\events_raw.csv",
+    "pages": "C:\\Users\\ASUS\\Desktop\\user_behavior_project\\data\\raw\\pages.csv",
+    "actions": "C:\\Users\\ASUS\\Desktop\\user_behavior_project\\data\\raw\\actions.csv"
+  }
+}
